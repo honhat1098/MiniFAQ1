@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HarmonyHeroes - Story Mode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                purple: '#46178f',
+                light: '#8854c0',
+                dark: '#1e3c72',
+                darker: '#2a5298',
+                accent: '#00b894',
+                yellow: '#fdcb6e',
+                red: '#d63031',
+                glass: 'rgba(255, 255, 255, 0.15)'
+              }
+            },
+            fontFamily: {
+              sans: ['Montserrat', 'sans-serif'],
+            },
+            animation: {
+              'float': 'float 6s ease-in-out infinite',
+              'pop': 'popIn 0.3s ease-out forwards',
+              'bounce-gentle': 'bounceGentle 2s infinite',
+              'spin-slow': 'spin 10s linear infinite',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-20px)' },
+              },
+              popIn: {
+                '0%': { opacity: '0', transform: 'scale(0.9) translateY(10px)' },
+                '100%': { opacity: '1', transform: 'scale(1) translateY(0)' },
+              },
+              bounceGentle: {
+                '0%, 100%': { transform: 'translateY(-5%)' },
+                '50%': { transform: 'translateY(0)' }
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        cursor: default; /* Use default cursor but we add click effects */
+        user-select: none;
+      }
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+      }
+      .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+      }
+
+      /* --- CLICK RIPPLE EFFECT --- */
+      .click-ripple {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        animation: rippleEffect 0.6s linear forwards;
+        z-index: 9999;
+      }
+
+      @keyframes rippleEffect {
+        0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+        100% { transform: translate(-50%, -50%) scale(15); opacity: 0; }
+      }
+
+      /* --- SPOTLIGHT EFFECT (VICTORY) --- */
+      .spotlight {
+        position: absolute;
+        top: -20%;
+        width: 150px;
+        height: 150%;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3) 0%, transparent 80%);
+        transform-origin: top center;
+        filter: blur(15px);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .spotlight-left {
+        left: 20%;
+        animation: swingLeft 4s ease-in-out infinite alternate;
+      }
+      .spotlight-right {
+        right: 20%;
+        animation: swingRight 4s ease-in-out infinite alternate;
+      }
+      .spotlight-center {
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+        background: linear-gradient(to bottom, rgba(253, 203, 110, 0.4) 0%, transparent 90%); /* Yellow tint */
+        animation: pulseLight 3s infinite;
+      }
+
+      @keyframes swingLeft {
+        from { transform: rotate(-15deg); }
+        to { transform: rotate(15deg); }
+      }
+      @keyframes swingRight {
+        from { transform: rotate(15deg); }
+        to { transform: rotate(-15deg); }
+      }
+      @keyframes pulseLight {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+      }
+
+      /* --- CONFETTI EFFECT --- */
+      .confetti-piece {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: #ffd300;
+        top: -20px;
+        opacity: 0;
+        z-index: 50;
+      }
+      .confetti-piece:nth-child(odd) { background: #74ebd5; }
+      .confetti-piece:nth-child(even) { background: #ff0055; }
+      .confetti-piece:nth-child(3n) { background: #fdcb6e; }
+      .confetti-piece:nth-child(4n) { background: #9face6; }
+      
+      @keyframes fall {
+        0% { opacity: 1; top: -10%; transform: translateX(0) rotate(0deg); }
+        100% { opacity: 0; top: 110%; transform: translateX(100px) rotate(720deg); }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "recharts": "https://esm.sh/recharts@^3.7.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2.39.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="text-white h-screen overflow-hidden">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
