@@ -44,7 +44,7 @@ export const Home: React.FC<HomeProps> = ({ onHost, onJoin }) => {
       </div>
 
       <div className="mt-16 text-sm opacity-50">
-        <p>Tip: Open this app in two separate browser tabs to simulate both roles simultaneously!</p>
+        <p></p>
       </div>
     </div>
   );
