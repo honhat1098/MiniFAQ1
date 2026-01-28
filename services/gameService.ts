@@ -105,18 +105,18 @@ export const toggleBackgroundMusic = (shouldPlay: boolean) => {
       audioCtx.resume();
   }
 
-  if (!bgMusicAudio) {
-    // 1. Ưu tiên load file của user
-    bgMusicAudio = new Audio('./soft-background-music-468495.mp3'); 
-    
-    // 2. Dự phòng: Nếu không tìm thấy file, tự động chuyển sang nhạc online để không lỗi
-    bgMusicAudio.onerror = () => {
-        console.warn("Không tìm thấy file nhạc local, chuyển sang nhạc demo online.");
-        bgMusicAudio!.src = 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=lofi-study-112191.mp3';
-    };
-    bgMusicAudio.loop = true;
-    bgMusicAudio.volume = 0.4;
-  }
+if (!bgMusicAudio) {
+  bgMusicAudio = new Audio(
+    'https://cdn.pixabay.com/download/audio/2022/11/22/audio_febc508520.mp3?filename=action-cinematic-hero-14987.mp3'
+  ); 
+
+  bgMusicAudio.onerror = () => {
+    console.warn("Không load được nhạc online.");
+  };
+
+  bgMusicAudio.loop = true;
+  bgMusicAudio.volume = 0.4;
+}
 
   if (shouldPlay) {
     // Xử lý policy chặn tự phát nhạc của trình duyệt
